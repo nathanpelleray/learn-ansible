@@ -1,0 +1,34 @@
+- name: Install web server
+  hosts: web
+  vars_files: vars.yml
+  become: true
+
+  tasks:
+    - name: Install apache and php
+      apt:
+        name:
+          - apache2
+          - php
+        state: present
+        update_cache: yes
+
+    - name: Delete default index.html
+      file:
+        path: /var/www/html/index.html
+        state: absent
+    
+    - name: Upload web app
+      copy:
+        src: app/
+        dest: /var/www/html/
+      
+    - name: upload templates
+      template:
+        src: ip.php.j2
+        dest: /var/www/html/ip.php
+    
+    - name: Start apache service
+      service:
+        name: apache2
+        state: started
+        enabled: yes

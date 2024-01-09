@@ -62,3 +62,25 @@ On peut pour chaque machine distante de définir un utilisateur par défaut. Cel
 [dev]
 192.168.1.161 ansible_user=user
 ```
+
+
+## Mini Projet: Installation d'un serveur web
+On commence par créer le fichier inventaire
+```
+[web]
+192.168.1.161 ansible_user=user
+```
+
+Pour éviter d'utiliser -i inventory, on peut surcharger le fichier de configuration par défaut de Ansible.
+Dans ansible.cfg:
+```
+[defaults]
+inventory = ./inventory
+```
+
+Ensuite, on écrit notre fichier playbook. Puis, on lance le playbook avec la commande:
+```bash
+ansible-playbook playbook.yml --ask-become-pass
+```
+
+**Remarque:** On voit l'utilisation d'un template avec le fichier ip.php.j2 (cela peut être utile pour les fichiers de configuration)
