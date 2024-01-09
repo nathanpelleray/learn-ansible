@@ -33,3 +33,32 @@ ansible all -i inventory -m ping -u user
 - -m: on demande d'utiliser un module (ici ping)
 - -u: on demande de lancer depuis un certain utilisateur (ici user)
 
+Si on a besoin de l'élévation de privilège, on peut utiliser les options:
+- --become: demande une élévation de privilège
+- --ask-become-pass: demande le mot de passe (pour sudo)
+```bash
+ansible all -i inventory -a "grep user /etc/shadow" -u user --become --ask-become-pass
+```
+
+## Les groupes dans l'inventaire
+Il y a possibilité de mettre chaque hôte distant dans un ou plusieurs groupes.
+```
+[dev]
+192.168.1.161
+
+[prod]
+192.168.1.162
+192.168.1.163
+```
+
+Ensuite pour lancer un module, il suffit de remplacer le all par le nom du/des groupes.
+```bash
+ansible dev -i inventory -m ping -u user
+```
+
+## Utilisateur par défaut
+On peut pour chaque machine distante de définir un utilisateur par défaut. Cela permet de ne plus mettre -u user
+```
+[dev]
+192.168.1.161 ansible_user=user
+```
